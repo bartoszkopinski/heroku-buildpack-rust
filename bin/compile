@@ -58,16 +58,3 @@ PATH="$rust_path/rustc/bin:$rust_path/cargo/bin:$PATH"
 LD_LIBRARY_PATH="$rust_path/rustc/lib${LD_LIBRARY_PATH+:$LD_LIBRARY_PATH}"
 export LD_LIBRARY_PATH
 echo $LD_LIBRARY_PATH
-
-# Make sure we have a fake home directory for the Cargo cache.  Ideally
-# we would keep these in our cache, but our ".git" directories don't
-# survive between builds.
-cargo_home="$(mktemp -d -t cargo_XXXX)"
-
-# Build the actual application using Cargo.
-echo "-----> Building application using Cargo"
-
-cd "$1"
-# To debug git issues:
-#export RUST_LOG="cargo::sources::git=debug"
-HOME="$cargo_home" cargo build --verbose --release
